@@ -21,7 +21,7 @@ describe('Persistent Node Chat Server', function() {
 
     /* Empty the db table before each test so that multiple tests
      * (or repeated runs of the tests) won't screw each other up: */
-    dbConnection.query('truncate ' + tablename, done);
+    dbConnection.query('select * from  ' + tablename, done);
   });
 
   afterEach(function() {
@@ -32,7 +32,7 @@ describe('Persistent Node Chat Server', function() {
     done();
   })
 
-  it('should check if posts exists', function(done) {
+  it('should check if GET messages works', function(done) {
     request({
       method: 'GET',
       uri: 'http://127.0.0.1:3000/classes/messages',
@@ -41,7 +41,7 @@ describe('Persistent Node Chat Server', function() {
   })
 
 
-  it('should check if users exists', function(done) {
+  it('should check if GET users works', function(done) {
     request({
       method: 'GET',
       uri: 'http://127.0.0.1:3000/classes/users',
@@ -90,7 +90,7 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should output all messages from the DB', function(done) {
     // Let's insert a message into the db
-       var queryString = "";
+       var queryString = `INSERT INTO messages (text, chatroom_id, user_id) VALUES ('Men like you can never change!', (SELECT chatroom.id FROM chatroom WHERE roomname = 'main'), (SELECT id FROM users WHERE username = 'Valjean'));`
        var queryArgs = [];
     // TODO - The exact query string and query args to use
     // here depend on the schema you design, so I'll leave

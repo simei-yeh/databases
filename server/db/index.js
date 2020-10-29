@@ -8,17 +8,18 @@ var mysql = require('mysql');
 //if request is for all messages, return messages and friend information
 //else if request is for users, return all users
 
-dbConnection = mysql.createConnection({
+var connection = mysql.createConnection({
   user: 'student',
   password: 'student',
   database: 'chat'
 });
-dbConnection.connect();
+
+connection.connect();
 
 
 
 module.exports = {
-  dbConnection
+  connection
 }
 
 /*
