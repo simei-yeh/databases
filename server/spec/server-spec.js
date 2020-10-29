@@ -10,9 +10,9 @@ describe('Persistent Node Chat Server', function() {
 
   beforeEach(function(done) {
     dbConnection = mysql.createConnection({
-      user: 'root',
-      // user: 'student',ß
-      // password: 'student',
+      user: 'student',
+      // user: 'student',
+      password: 'student',
       database: 'chat'
     });
     dbConnection.connect();
@@ -29,9 +29,26 @@ describe('Persistent Node Chat Server', function() {
   });
 
   it('should check if table exists', function(done) {
-
     done();
   })
+
+  it('should check if posts exists', function(done) {
+    request({
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+    })
+    done();
+  })
+
+
+  it('should check if users exists', function(done) {
+    request({
+      method: 'GET',
+      uri: 'http://127.0.0.1:3000/classes/users',
+    })
+    done();
+  })
+
 
   it('Should insert posted messages to the DB', function(done) {
     // Post the user to the chat server.

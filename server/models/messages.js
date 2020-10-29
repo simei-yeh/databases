@@ -1,19 +1,35 @@
 var db = require('../db');
 
 module.exports = {
-  getAll: function () {  // a function which produces all the messages
+  getAll: function (callback) {  // a function which produces all the messages
     //sends request to get data
     //formats data
     //returns data
-    db.getAllMessages((err, data) => {
+    db.query(`SELECT text, roomname, username FROM messages
+    INNER JOIN chatroom ON chatroom.id = messages.chatroom_id
+    INNER JOIN users ON messages.user_id = users.id;`, (err, res) => {
       if (err) {
         callback(err);
       } else {
-        callback(null, data);
+        callback(null, res);
       }
-    })
+    });
   },
 
-  create: function () { } // a function which can be used to insert a message into the database
+  create: function (message, callback) { // a function which can be used to insert a message into the database
     //connect to the sql database
+    db.query(
+      //insert a user if none exists in users table
+      //insert a chatroom if none exists in chatroom table
+      //find relevant chatroom and user and enter message, chatroom name, and username into messages table
+      `INSERT INTO users (username) SELECT '${message.username}' WHERE NOT EXISTS (SELECT DISTINCT (username) FROM users WHERE username = '${message.username}');
+      INSERT INTO chatroom (roomname) SELECT '${message.roomname}' WHERE NOT EXISTS (SELECT DISTINCT (roomname) FROM chatroom WHERE roomname = '${message.roomname}');
+      INSERT INTO messages (text, chatroom_id, user_id) VALUES ('${message.message}', (SELECT chatroom.id FROM chatroom WHERE roomname = '${message.roomname}'), (SELECT id FROM users WHERE username = '${message.username}'));`, (err, res) => {
+      if (err) {
+        callback(err);
+      } else {
+        callback(null, res);
+      }
+    });
+  }
 };

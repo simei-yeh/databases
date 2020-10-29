@@ -12,5 +12,12 @@ module.exports = {
     })
   },
 
-  post: function (req, res) {}
+  post: function (req, res) {
+    models.users.create(req.json.username, (err, data) => {
+      if (err) {res.sendStatus(400);
+      } else {
+        res.status(204).json(data);
+      }
+    })
+  }
 };
