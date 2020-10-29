@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS `chat`;
+
 CREATE DATABASE chat;
 
 USE chat;
@@ -48,6 +50,7 @@ ALTER TABLE `friendsRelationship` ADD FOREIGN KEY (user_id) REFERENCES `users` (
 
 
 /*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
+ *   for ubuntu/linux: sudo mysql -u root < server/schema.sql
+ *   for mac: mysql -u root < server/schema.sql
  *  to create the database and the tables.*/
 
