@@ -18,7 +18,7 @@ module.exports = {
 
   create: function (message, callback) { // a function which can be used to insert a message into the database
     //connect to the sql database
-    console.log(message)
+    console.log('messages create', message.message, message.roomname,);
 
       //insert a user if none exists in users table
       //insert a chatroom if none exists in chatroom table
@@ -26,7 +26,7 @@ module.exports = {
       //INSERT INTO users (username) SELECT '${message.username}' WHERE NOT EXISTS (SELECT DISTINCT (username) FROM users WHERE username = '${message.username}');
 
       //`INSERT INTO chatroom (roomname) SELECT '${message.roomname}' WHERE NOT EXISTS (SELECT DISTINCT (roomname) FROM chatroom WHERE roomname = '${message.roomname}');`, (err, res) => {
-    db.connection.query(`INSERT INTO messages (text, chatroom_id, user_id) VALUES ('${message.message}', (SELECT chatroom.id FROM chatroom WHERE roomname = '${message.roomname}'), (SELECT id FROM users WHERE username = '${message.username}'));`, (err, res) => {
+    db.connection.query(`INSERT INTO messages (text, chatroom_id, user_id) VALUES ('${message.message}', (SELECT chatroom.id FROM chatroom WHERE roomname = '${message.roomname}' limit 1), (SELECT id FROM users WHERE username = '${message.username}' limit 1));`, (err, res) => {
         if (err) {
             callback(err);
          } else {
